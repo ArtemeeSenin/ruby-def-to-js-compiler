@@ -15,17 +15,30 @@ class Tokenizer
   end
 
   def tokenize
+    tokens = []
     until @code.empty?
-      TOKEN_TYPES.each do |type, re|
-        re = /\A(#{re})/
-        if @code =~ re
-          value = $1
-          @code = @code[value.length..-1]
-          return Token.new(type, value)
-        end
+      tokens << tokenize_one_token
+      @code = @code.strip
+    end
+    tokens
+  end
+
+  def tokenize_one_token
+    TOKEN_TYPES.each do |type, re|
+      re = /\A(#{re})/
+      if @code =~ re
+        value = $1
+        @code = @code[value.length..-1]
+        return Token.new(type, value)
       end
     end
+
+    raise RuntimeError.new(
+        "Could not match token on #{@code.inspect}"
+    )
   end
 end
 
 Token = Struct.new(:type, :value)
+tokens = Tokenizer.new(File.read("test.src")).tokenize
+puts tokens.map(&:inspect).join("\n")
