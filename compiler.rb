@@ -8,6 +8,7 @@ class Tokenizer
       [:integer, /\b[0-9]+\b/],
       [:oparen, /\(/],
       [:cparen, /\)/],
+      [:comma, /,/],
   ]
 
   def initialize(code)
@@ -40,5 +41,68 @@ class Tokenizer
 end
 
 Token = Struct.new(:type, :value)
+
 tokens = Tokenizer.new(File.read("test.src")).tokenize
 puts tokens.map(&:inspect).join("\n")
+
+class Parser
+  def initialize(tokens)
+    @tokens = tokens
+  end
+
+  def parse
+    parse_def
+  end
+
+  def parse_def
+    consume(:def)
+    name = consume(:identifier).value
+    arg_names = parse_arg_names
+    body = parse_expr
+    consume(:end)
+    DefNode.new(name, arg_names, body)
+  end
+
+  def parse_arg_names
+    arg_names = []
+    consume(:oparen)
+    if peek(:identifier)
+      arg_names << consume(:identifier).value
+      while peek(:comma)
+        consume(:comma)
+        arg_names << consume(:identifier).value
+      end
+    end
+    consume(:cparen)
+    arg_names
+  end
+
+  def parse_expr
+    parse_integer
+  end
+
+  def parse_integer
+    IntegerNode.new(consume(:integer).value.to_i)
+  end
+
+  def peek(expected_type)
+    @tokens.fetch(0).type == expected_type
+  end
+
+  def consume(expected_type)
+    token = @tokens.shift
+    if token.type == expected_type
+      token
+    else
+      raise RuntimeError.new(
+          "Expected token type #{expected_type} but got #{token.type.inspect}"
+      )
+    end
+  end
+end
+
+DefNode = Struct.new(:name, :arg_names, :body)
+IntegerNode = Struct.new(:integer)
+
+tree = Parser.new(tokens).parse
+p tree
