@@ -80,8 +80,10 @@ class Parser
   def parse_expr
     if peek(:integer)
       parse_integer
-    else
+    elsif peek(:identifier) && peek(:oparen, 1)
       parse_call
+    else
+      parse_var_ref
     end
   end
 
@@ -93,6 +95,10 @@ class Parser
     name = consume(:identifier).value
     arg_exprs = parse_arg_exprs
     CallNode.new(name, arg_exprs)
+  end
+
+  def parse_var_ref
+    ValRefNode.new(consume(:identifier).value)
   end
 
   def parse_arg_exprs
@@ -109,8 +115,8 @@ class Parser
     arg_exprs
   end
 
-  def peek(expected_type)
-    @tokens.fetch(0).type == expected_type
+  def peek(expected_type, offset = 0)
+    @tokens.fetch(offset).type == expected_type
   end
 
   def consume(expected_type)
@@ -123,10 +129,12 @@ class Parser
       )
     end
   end
+
 end
 
 DefNode = Struct.new(:name, :arg_names, :body)
 IntegerNode = Struct.new(:integer)
+ValRefNode = Struct.new(:value)
 CallNode = Struct.new(:name, :arg_expr)
 
 tree = Parser.new(tokens).parse

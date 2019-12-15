@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="89c10fb2-3a78-4b25-aa3a-2934b673c7c0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/artemee.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/artemee.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/compiler.rb" beforeDir="false" afterPath="$PROJECT_DIR$/compiler.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.src" beforeDir="false" afterPath="$PROJECT_DIR$/test.src" afterDir="false" />
@@ -63,7 +62,7 @@
       <workItem from="1576362240166" duration="276000" />
       <workItem from="1576362625847" duration="29000" />
       <workItem from="1576407021305" duration="532000" />
-      <workItem from="1576407594265" duration="3696000" />
+      <workItem from="1576407594265" duration="4372000" />
     </task>
     <servers />
   </component>
