@@ -161,4 +161,9 @@ end
 tokens = Tokenizer.new(File.read("test.src")).tokenize
 tree = Parser.new(tokens).parse
 generated = Generator.new.generate(tree)
-puts generated
+
+RUNTIME = "function add(x,y) { return x + y };"
+TEST = "console.log(f(1,2));"
+# set chmod +x to compiler.rb
+# use ./compiler.rv | node to execute code
+puts [RUNTIME, generated, TEST].join("\n")
