@@ -2,6 +2,7 @@
   <dictionary name="artemee">
     <words>
       <w>cparen</w>
+      <w>exprs</w>
       <w>oparen</w>
     </words>
   </dictionary>
